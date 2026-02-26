@@ -8,4 +8,8 @@ export default defineConfig({
     tailwindcss(),
     react(),
   ],
+  // SockJS-client references Node.js `global` — polyfill it for the browser
+  define: {
+    global: 'globalThis',
+  },
 })

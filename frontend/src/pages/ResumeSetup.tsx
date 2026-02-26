@@ -4,23 +4,10 @@ import {
     UploadCloud, FileText, X, CheckCircle, Sparkles, Play,
     Layers, Network, Brain, Code2, Cpu, Loader, Plus, Trash2
 } from 'lucide-react';
+import { uploadResume, startInterview } from '../services/interviewApi';
+import type { ResumeProfile, SkillCategory } from '../services/interviewApi';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 type Stage = 'upload' | 'processing' | 'review';
-type SkillCategory = { category: string; color: string; skills: string[] };
-
-// ── Mock extracted profile ────────────────────────────────────────────────────
-const mockExtracted = {
-    name: 'Alex Johnson',
-    experience: '3 years',
-    education: 'B.Tech Computer Science',
-    skillCategories: [
-        { category: 'Languages', color: 'indigo', skills: ['JavaScript', 'TypeScript', 'Python', 'Java'] },
-        { category: 'Frontend', color: 'purple', skills: ['React', 'Next.js', 'CSS', 'Tailwind'] },
-        { category: 'Backend', color: 'blue', skills: ['Spring Boot', 'Node.js', 'REST APIs'] },
-        { category: 'DSA & CS', color: 'emerald', skills: ['Data Structures', 'Algorithms', 'System Design'] },
-    ] as SkillCategory[],
-};
 
 const processingSteps = [
     'Parsing document structure...',
@@ -30,7 +17,6 @@ const processingSteps = [
     'Generating skill profile...',
 ];
 
-// ── Component ─────────────────────────────────────────────────────────────────
 const ResumeSetup: React.FC = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,62 +25,100 @@ const ResumeSetup: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [processingStep, setProcessingStep] = useState(0);
-    const [extracted, setExtracted] = useState(mockExtracted);
+    const [extracted, setExtracted] = useState<ResumeProfile | null>(null);
     const [difficulty, setDifficulty] = useState('Medium');
     const [topic, setTopic] = useState('Arrays');
     const [newSkill, setNewSkill] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
-    const handleFile = (f: File) => {
-        if (!['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(f.type)) {
-            alert('Please upload a PDF or Word document.');
-            return;
-        }
-        setFile(f);
-        setStage('processing');
-        runProcessingSimulation();
-    };
-
-    const runProcessingSimulation = () => {
+    const animateProcessing = () => {
         let step = 0;
         const interval = setInterval(() => {
             step++;
             setProcessingStep(step);
-            if (step >= processingSteps.length) {
-                clearInterval(interval);
-                setTimeout(() => setStage('review'), 500);
-            }
-        }, 800);
+            if (step >= processingSteps.length) clearInterval(interval);
+        }, 700);
+    };
+
+    const handleFile = async (f: File) => {
+        const allowedTypes = ['application/pdf', 'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!allowedTypes.includes(f.type)) {
+            setErrorMsg('Please upload a PDF or Word document (.pdf, .doc, .docx)');
+            return;
+        }
+        setFile(f);
+        setStage('processing');
+        setErrorMsg('');
+        animateProcessing();
+
+        try {
+            const profile = await uploadResume(f);
+            setExtracted(profile);
+        } catch (err) {
+            console.error('Upload failed, using fallback profile', err);
+            // Fallback profile so the app still works without a backend
+            setExtracted({
+                name: 'Demo Candidate',
+                experience: '2 years',
+                education: 'B.Tech Computer Science',
+                skillCategories: [
+                    { category: 'Languages', color: 'indigo', skills: ['JavaScript', 'TypeScript', 'Python'] },
+                    { category: 'Frontend', color: 'purple', skills: ['React', 'CSS'] },
+                    { category: 'Backend', color: 'blue', skills: ['Spring Boot', 'Node.js'] },
+                    { category: 'DSA & CS', color: 'emerald', skills: ['Data Structures', 'Algorithms'] },
+                ],
+            });
+        } finally {
+            setStage('review');
+        }
     };
 
     const onDrop = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
+        e.preventDefault(); setIsDragging(false);
         if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
     }, []);
 
     const removeSkill = (catIdx: number, skill: string) => {
-        setExtracted(prev => ({
-            ...prev,
-            skillCategories: prev.skillCategories.map((c, i) =>
-                i === catIdx ? { ...c, skills: c.skills.filter(s => s !== skill) } : c
+        if (!extracted) return;
+        setExtracted({
+            ...extracted,
+            skillCategories: extracted.skillCategories.map((c: SkillCategory, i: number) =>
+                i === catIdx ? { ...c, skills: c.skills.filter((s: string) => s !== skill) } : c
             ),
-        }));
+        });
     };
 
     const addSkill = (catIdx: number) => {
-        if (!newSkill.trim()) return;
-        setExtracted(prev => ({
-            ...prev,
-            skillCategories: prev.skillCategories.map((c, i) =>
+        if (!newSkill.trim() || !extracted) return;
+        setExtracted({
+            ...extracted,
+            skillCategories: extracted.skillCategories.map((c: SkillCategory, i: number) =>
                 i === catIdx ? { ...c, skills: [...c.skills, newSkill.trim()] } : c
             ),
-        }));
+        });
         setNewSkill('');
     };
 
-    const startInterview = () => {
-        const id = Math.random().toString(36).substring(7);
-        navigate(`/interview/${id}?difficulty=${difficulty}&topic=${topic}`);
+    const startInterviewSession = async () => {
+        if (!extracted) return;
+        const allSkills = extracted.skillCategories.flatMap((c: SkillCategory) => c.skills);
+        try {
+            const response = await startInterview({
+                skills: allSkills,
+                difficulty,
+                topic,
+                candidateName: extracted.name,
+                candidateExperience: extracted.experience,
+                candidateEducation: extracted.education,
+            });
+            // Navigate with real sessionId from backend
+            navigate(`/interview/${response.sessionId}?skills=${allSkills.join(',')}&difficulty=${difficulty}&topic=${topic}&total=${response.totalQuestions}`);
+        } catch (err) {
+            console.error('Failed to start session, navigating with local session', err);
+            const localId = Math.random().toString(36).substring(7);
+            navigate(`/interview/${localId}?skills=${allSkills.join(',')}&difficulty=${difficulty}&topic=${topic}`);
+        }
     };
 
     const colorMap: Record<string, string> = {
@@ -120,12 +144,13 @@ const ResumeSetup: React.FC = () => {
                 <h1 className="text-4xl font-bold mb-2">
                     AI DSA <span className="gradient-text">Voice Interview</span>
                 </h1>
-                <p className="text-gray-400 text-lg">Upload your resume — our AI will extract your skills and personalise your interview.</p>
+                <p className="text-gray-400 text-lg">Upload your resume — AI will extract your skills and personalise your interview.</p>
             </div>
 
-            {/* ── STAGE: UPLOAD ──────────────────────────────────────────────── */}
+            {/* UPLOAD */}
             {stage === 'upload' && (
                 <div className="glass-panel p-12 flex flex-col items-center text-center">
+                    {errorMsg && <p className="text-red-400 text-sm mb-4 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">{errorMsg}</p>}
                     <div
                         className={`w-full max-w-xl border-2 border-dashed rounded-2xl p-16 flex flex-col items-center gap-4 cursor-pointer transition-all ${isDragging ? 'border-indigo-500 bg-indigo-500/10' : 'border-white/10 hover:border-white/25 hover:bg-white/[0.03]'}`}
                         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -138,7 +163,7 @@ const ResumeSetup: React.FC = () => {
                         </div>
                         <div>
                             <h2 className="text-xl font-semibold mb-1">Drop your resume here</h2>
-                            <p className="text-gray-500 text-sm">Supports PDF, DOC, DOCX — Max 5MB</p>
+                            <p className="text-gray-500 text-sm">PDF, DOC, DOCX — Max 10MB</p>
                         </div>
                         <button className="primary-btn px-6 py-2.5 text-sm flex items-center gap-2" onClick={e => { e.stopPropagation(); fileInputRef.current?.click(); }}>
                             <FileText size={16} /> Browse Files
@@ -148,34 +173,24 @@ const ResumeSetup: React.FC = () => {
                 </div>
             )}
 
-            {/* ── STAGE: PROCESSING ──────────────────────────────────────────── */}
+            {/* PROCESSING */}
             {stage === 'processing' && (
                 <div className="glass-panel p-12 flex flex-col items-center text-center">
                     <div className="relative w-28 h-28 mb-8">
-                        {/* Outer spinning ring */}
                         <div className="absolute inset-0 rounded-full border-4 border-indigo-500/20 border-t-indigo-500 animate-spin" />
-                        {/* Middle ring */}
                         <div className="absolute inset-3 rounded-full border-4 border-purple-500/20 border-t-purple-500 animate-spin" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }} />
                         <div className="absolute inset-0 flex items-center justify-center">
                             <Cpu size={28} className="text-indigo-400 animate-pulse" />
                         </div>
                     </div>
-
                     <h2 className="text-2xl font-bold mb-2">AI Analysing Resume</h2>
                     <p className="text-gray-500 text-sm mb-8">{file?.name}</p>
-
                     <div className="w-full max-w-sm space-y-3">
                         {processingSteps.map((step, i) => (
-                            <div key={i} className={`flex items-center gap-3 p-3 rounded-xl text-sm transition-all duration-500 ${i < processingStep ? 'text-gray-400 opacity-60' :
-                                    i === processingStep ? 'text-white bg-white/5 border border-white/10' :
-                                        'text-gray-600'
-                                }`}>
-                                {i < processingStep
-                                    ? <CheckCircle size={16} className="text-emerald-500 shrink-0" />
-                                    : i === processingStep
-                                        ? <Loader size={16} className="text-indigo-400 shrink-0 animate-spin" />
-                                        : <div className="w-4 h-4 rounded-full border border-white/10 shrink-0" />
-                                }
+                            <div key={i} className={`flex items-center gap-3 p-3 rounded-xl text-sm transition-all duration-500 ${i < processingStep ? 'text-gray-400 opacity-60' : i === processingStep ? 'text-white bg-white/5 border border-white/10' : 'text-gray-600'}`}>
+                                {i < processingStep ? <CheckCircle size={16} className="text-emerald-500 shrink-0" /> :
+                                    i === processingStep ? <Loader size={16} className="text-indigo-400 shrink-0 animate-spin" /> :
+                                        <div className="w-4 h-4 rounded-full border border-white/10 shrink-0" />}
                                 {step}
                             </div>
                         ))}
@@ -183,16 +198,14 @@ const ResumeSetup: React.FC = () => {
                 </div>
             )}
 
-            {/* ── STAGE: REVIEW ──────────────────────────────────────────────── */}
-            {stage === 'review' && (
+            {/* REVIEW */}
+            {stage === 'review' && extracted && (
                 <div className="grid grid-cols-3 gap-6">
-                    {/* Left: Skills panel */}
                     <div className="col-span-2 space-y-6">
-
                         {/* Profile card */}
                         <div className="glass-panel p-6 flex items-center gap-5">
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shrink-0">
-                                {extracted.name.split(' ').map(n => n[0]).join('')}
+                                {extracted.name.split(' ').map((n: string) => n[0]).join('')}
                             </div>
                             <div className="flex-1 min-w-0">
                                 <h2 className="text-xl font-bold">{extracted.name}</h2>
@@ -207,27 +220,25 @@ const ResumeSetup: React.FC = () => {
                             </button>
                         </div>
 
-                        {/* Skills by category */}
+                        {/* Skills */}
                         <div className="glass-panel p-6">
                             <div className="flex items-center gap-2 mb-5">
                                 <Code2 size={20} className="text-indigo-400" />
                                 <h2 className="text-lg font-bold">AI-Extracted Skills</h2>
-                                <span className="ml-auto text-xs text-gray-500">Click × to remove · Add custom skills below</span>
+                                <span className="ml-auto text-xs text-gray-500">Click × to remove · Add below</span>
                             </div>
-
                             <div className="space-y-5">
-                                {extracted.skillCategories.map((cat, catIdx) => (
+                                {extracted.skillCategories.map((cat: SkillCategory, catIdx: number) => (
                                     <div key={catIdx}>
                                         <div className="flex items-center gap-2 mb-2.5">
-                                            <div className={`w-2 h-2 rounded-full ${dot[cat.color]}`} />
+                                            <div className={`w-2 h-2 rounded-full ${dot[cat.color] || 'bg-gray-400'}`} />
                                             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{cat.category}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
-                                            {cat.skills.map(skill => (
-                                                <div key={skill} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border ${colorMap[cat.color]} group`}>
+                                            {cat.skills.map((skill: string) => (
+                                                <div key={skill} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border ${colorMap[cat.color] || 'bg-gray-800 border-gray-700 text-gray-300'} group`}>
                                                     {skill}
-                                                    <button onClick={() => removeSkill(catIdx, skill)}
-                                                        className="opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all ml-0.5">
+                                                    <button onClick={() => removeSkill(catIdx, skill)} className="opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all ml-0.5">
                                                         <X size={12} />
                                                     </button>
                                                 </div>
@@ -235,6 +246,7 @@ const ResumeSetup: React.FC = () => {
                                             <div className="flex items-center gap-1">
                                                 <input
                                                     placeholder={`Add ${cat.category}...`}
+                                                    value={newSkill}
                                                     className="w-32 bg-transparent border border-dashed border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-gray-400 placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-colors"
                                                     onKeyDown={e => { if (e.key === 'Enter') addSkill(catIdx); }}
                                                     onChange={e => setNewSkill(e.target.value)}
@@ -250,9 +262,8 @@ const ResumeSetup: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right: Interview config */}
+                    {/* Right: Config */}
                     <div className="space-y-6">
-                        {/* Topic */}
                         <div className="glass-panel p-5">
                             <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm"><Brain size={16} className="text-purple-400" /> Topic</h3>
                             <div className="grid grid-cols-2 gap-2">
@@ -264,8 +275,6 @@ const ResumeSetup: React.FC = () => {
                                 ))}
                             </div>
                         </div>
-
-                        {/* Difficulty */}
                         <div className="glass-panel p-5">
                             <h3 className="font-semibold mb-4 flex items-center gap-2 text-sm"><Sparkles size={16} className="text-amber-400" /> Difficulty</h3>
                             <div className="space-y-2">
@@ -277,9 +286,7 @@ const ResumeSetup: React.FC = () => {
                                 ))}
                             </div>
                         </div>
-
-                        {/* Start */}
-                        <button onClick={startInterview}
+                        <button onClick={startInterviewSession}
                             className="w-full py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition-all shadow-[0_4px_24px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_32px_rgba(99,102,241,0.55)] transform hover:-translate-y-0.5 text-white">
                             <Play size={18} fill="currentColor" /> Start Interview
                         </button>
