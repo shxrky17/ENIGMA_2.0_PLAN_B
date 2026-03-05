@@ -1,0 +1,47 @@
+Pratham Bhosale  
+Backend developer  
++91-7719900097  |  pmbhosale353@gmail.com  | github   | linkedin   
+PROFILE  
+Backend Developer  experienced in building secure  and scalable APIs  using Node.js , Express , and MongoDB . Skilled in 
+RESTful architecture , JWT authentication , and database optimiza tion for performance. Passionate about building robust 
+full-stack applications  that are efficient, maintainable, and user -friendly . 
+ 
+EDUCATION  
+Yashwantrao Chavan College of Engineering                  Nagpur , India   
+B.Tech in Computer Technology                                         2022 – 2026  
+CGPA -8.06 (upto 6th sem)  
+ 
+SKILLS  
+ Programming Languages : Java, Python, SQL, JavaScript.   
+ Backend : Node.js, Express.js, JWT Authentication, Git, GitHub, VS Code ,Postman . 
+ Development Tools :HTML,CSS,React.  
+ Databases: MySQL, MongoDB  
+ Cloud & Deployment : AWS basic (EC2)  .  
+ Data Visualization & Analytics : Power BI . 
+ 
+CERTIFICATIONS   
+ Complete DSA in Java – by Apna College  
+ ML Fundamentals & Unsupervised Learning – Coursera  
+ 
+PROJECTS  
+Online Quiz Portal – Role -Based System                        Jan 25 – March 25 
+• Developed a full-stack quiz platform  that allows admins to create and manage quizzes while users can take timed 
+MCQ tests  with difficulty levels, history tracking, and result analytics.  
+• Implemented JWT authentication  and role-based authorization  to ensure secure and controlled access for both 
+admin and user modules, using Node.js, Express.js , and  MongoDB . 
+• Designed and deploy ed a responsive web interface with HTML5, CSS3, and JavaScript , delivering a seamless  usab le 
+system.  
+ 
+LawPilot – AI-Based Legal Assistant (Major Project)            June 25 – Oct 25 
+• Developed an AI-powered legal assistant  that analyzes Marathi crime scenarios  and predicts relevant BNS sections  
+using TF-IDF, XGBoost , and MarathiBERT  for multi -label classification , solving the problem of manual legal 
+mapping.  
+• Integrated MongoDB  to store  and retrieve simplified legal explanations  for predicted sections, making complex 
+legal information more understandable for users.  
+•  Built a RESTful Flask backend  and responsive frontend  with HTML5 , CSS3 , and JavaScript , delivering user -friendly 
+legal solu tion. 
+ 
+ACHIEVEMENTS  
+ Solved 300+  Data Structures and Algorithms problems on LeetCode  in Java, achieving a global rank of 377,118 . 
+ Earned LeetCode badges  for 50 Days , 100 Days , and 3-Month Continuous Coding Challenge , demonstrating 
+consistent problem -solving practice.  

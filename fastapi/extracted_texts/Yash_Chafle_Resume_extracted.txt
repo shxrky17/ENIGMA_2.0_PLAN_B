@@ -1,0 +1,36 @@
+PROJECTS
+Developed a web application using Spring Boot and React enabling managers  to assign tasks to employees.YASH CHAFLE
++91 9975952876 · yashchafle1769@gmail.com 
+LAPAROSCOPIC ORGAN CLASSIFICATION MODEL
+ TASK MANAGEMENT APPLICATIONEDUCATION
+Senior Secondary Education 
+Yeshwantrao Chavan College of Engineering
+ 2022 - 2026
+Bachelor of Technology in Computer Technology 
+Higher Secondary Education 
+St Vincent Pallotti School Decent Junior College
+2022
+2020
+Implemented JWT-based authentication using Spring Security to protect REST API endpoints, ensuring
+secure access control.
+Developed RESTful APIs for task viewing, sign-up, sign-in and integrating them with a MySQL database.
+Structured the backend using clean architecture (Controller-Service-Repository) and managed the
+project using Maven and Github.
+Built a high-accuracy 98% organ classification model using ResNet18 on laparoscopic surgical data.
+Converted a segmentation-based dataset of 4,000+ images into a classification dataset.SKILLS
+EXTRACURRICULAR ACTIVITIESBuilt training and evaluation pipelines with GPU support and logging, enabling smooth handling of
+datasets with 5GB+ of surgical images.Applied extensive data augmentation and preprocessing techniques using PyTorch transforms.SUMMARY
+Highly motivated Backend Developer with hands-on experience in building web applications using Spring Boot and
+React. Proficient in designing and developing RESTful APIs and integrating them with front-end systems for
+seamless user experiences.Demonstrates strong problem-solving abilities.
+Programming & Query Languages: Java, C++, SQL
+ Frameworks & Libraries: Spring Boot, React
+DBMS & Tools  : MySQL, Postman, Maven, Github
+Led project team, demonstrating strong leadership skills, effective coordination, and timely delivery of
+outcomes.
+REAL-TIME CHAT APPLICATIONImplemented message routing with @MessageMapping and @SendTo, enabling instant group chat functionality.
+Designed a session-based system to track active users by storing attributes in WebSocket headers.
+Built frontend integration with SockJS and STOMP client to deliver live chat updates on message
+events.
+Captained the departmental cricket team, fostering teamwork, strategy, and collaboration to achieve
+collective goals.

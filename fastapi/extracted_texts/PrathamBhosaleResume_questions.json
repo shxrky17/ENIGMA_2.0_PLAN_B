@@ -1,0 +1,14 @@
+{
+    "questions": [
+        "Can you walk me through the design and implementation of the Sports Player Manager application, focusing on how you used JDBC and SQL for CRUD operations?",
+        "What challenges did you encounter while deploying the Gym Planner web application on AWS EC2, and how did you resolve them?",
+        "Explain a complex data structure or algorithm problem you solved on LeetCode that earned you a badge, and describe your approach to optimizing its solution.",
+        "In the LawPilot project, how are you leveraging AI for text processing and document summarization, and what technologies are you using to implement it?",
+        "Describe a situation where you had to collaborate with teammates on a major project. How did you handle conflicts or differing opinions?",
+        "How do you ensure the security and scalability of applications you develop, particularly when integrating role\u2011based authentication and cloud storage?",
+        "Can you discuss your experience with front\u2011end frameworks like React and Node.js in building interactive web applications?",
+        "Tell me about a time when you had to learn a new technology quickly (e.g., Power BI or AWS). What steps did you take and what was the outcome?",
+        "What testing strategies do you employ to validate both the functionality and performance of your Java or Python code?",
+        "How do you prioritize tasks and manage your time while balancing coursework, multiple projects, and extracurricular commitments?"
+    ]
+}

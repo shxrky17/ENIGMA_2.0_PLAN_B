@@ -1,0 +1,43 @@
+PRATHAM  BHOSALE  
+7719900097  | pmbhosale353@gmail.com  | github.com/pmbhosale96k  |linkedin.com/in/pratham -bhosale -/  
+PROFILE  
+Skilled Programmer with a strong foundation in Computer Science fundamentals and analytical problem -solving. Focused on 
+developing solid and scalable server -side applications and efficient backend logic. Eager to contribute technical expertise to 
+innovative web infrastructure projects and quickly integrate into challenging development environments.  
+ 
+EDUCATION  
+ Yeshwantrao Chavan Colleg e of Engineering, Nagpur  
+Bachelor of Engineering in Computer Technology, CGPA: 8.06  
+ New English Junior College Mahal, Nagpur  
+Class XII  | Percentage: 85.5%  
+ New English  High School Congress Nagar , Nagpur  
+Class X | Percentage : 81.6%  
+SKILLS  
+ Programming Languages : Java, Python, SQL,  JavaScript  
+ Web Frameworks & Runtime: Node.js, Express.js  
+ Version Control: Git, GitHub  
+ Frontend Development: HTML5, CSS3  
+ Databases: MySQL , MongoDB  
+ Tools & IDEs:  VS Code , Postman  
+ Data Visualization & Analytics : Power BI  
+ 
+CERTIFICATIONS   
+ Data Structures and Algorithms (DSA) in Java  – Apna College   
+ Machine Learning Fundamentals & Unsupervised Learning  – Coursera  
+ 
+PROJECTS  
+Online Quiz Portal – Role -Based System            Jan 25 –March 25 
+• Technology Stack : Built with Node.js, Express.js (API/Backend), MongoDB (Database), JWT (Authentication), and 
+HTML5/CSS3/JavaScript (Frontend).  
+• Engineered a full -stack quiz platform designed to provide a secure, multi -user environment for admin quiz 
+management and user timed MCQ assessments  
+• Developed core features including difficulty levels, user history tracking, and result analytics via a responsive interface.  
+ 
+LawPilot – AI-Based Legal Assistant                  June 25 – Oct 25 
+• Technology Stack:  Built with Python/Flask (RESTful Backend), MongoDB (Database), TF -IDF, XGBoost, MarathiBERT 
+(Machine Learning), and HTML5/CSS3/JavaScript (Frontend).  
+• Developed an AI -powered legal assistant to solve the problem of manual legal mapping by analyzing Marathi  crime 
+scenarios and predicting the relevant BNS sections using multi -label classification.  
+• Integrated MongoDB to store and retrieve simplified legal explanations for the predicted sections, successfully 
+delivering a user -friendly solution that makes complex legal information more understandable.  
+ 

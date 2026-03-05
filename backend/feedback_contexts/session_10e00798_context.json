@@ -1,0 +1,10 @@
+{
+  "sessionId" : "10e00798",
+  "candidateName" : "Demo Candidate",
+  "skills" : [ "Java", "JavaScript", "React", "CSS", "Spring Boot", "Data Structures", "Algorithms" ],
+  "difficulty" : "Easy",
+  "topic" : "Arrays",
+  "interactionLog" : [ ],
+  "codeSubmissions" : [ ],
+  "transcript" : ""
+}

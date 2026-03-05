@@ -1,0 +1,12 @@
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston:latest
+    container_name: piston_api
+    restart: always
+    ports:
+      - "2000:2000"
+    privileged: true
+    tmpfs:
+      - /piston/jobs # This prevents the Windows permission crash
+    environment:
+      - PISTON_DISABLE_NETWORKING=falsek

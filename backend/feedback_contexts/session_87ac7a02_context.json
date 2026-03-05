@@ -1,0 +1,21 @@
+{
+  "sessionId" : "87ac7a02",
+  "candidateName" : "Demo Candidate",
+  "skills" : [ "Java", "JavaScript", "React", "CSS", "Spring Boot", "Data Structures", "Algorithms" ],
+  "difficulty" : "Medium",
+  "topic" : "Arrays",
+  "interactionLog" : [ ],
+  "codeSubmissions" : [ {
+    "language" : "java",
+    "questionId" : 202,
+    "questionText" : "coding problem",
+    "code" : "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Implement your array solution here\n    }\n}",
+    "passed" : true,
+    "timeComplexity" : "O(N)",
+    "spaceComplexity" : "O(N)",
+    "feedback" : "Code evaluated.",
+    "testResults" : [ ],
+    "timestamp" : "2026-02-27T05:53:05.891862100"
+  } ],
+  "transcript" : "[USER]: Code submitted [java]:\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Implement your array solution here\n    }\n}\n[AI]: Code feedback: Code evaluated."
+}

@@ -1,0 +1,14 @@
+{
+    "questions": [
+        "Can you walk me through the architecture of the Task Management Application you built, specifically how you organized the Controller\u2011Service\u2011Repository layers and why you chose that structure?",
+        "How did you implement JWT\u2011based authentication with Spring Security in your Task Management Application, and what steps did you take to secure token handling and refresh?",
+        "Describe a challenging bug you encountered while integrating React with your Spring Boot backend. How did you diagnose and resolve it?",
+        "In your Real\u2011Time Chat Application, how did you use Spring\u2019s WebSocket support, SockJS, and STOMP to manage message routing and user sessions? What were the biggest performance considerations?",
+        "Explain the data preprocessing pipeline you created to convert a segmentation\u2011based dataset into a classification set for the Laparoscopic Organ Classification Model. How did you ensure the model\u2019s high accuracy?",
+        "What techniques did you employ for data augmentation in PyTorch, and how did they impact the performance of your ResNet18 model?",
+        "Give an example of a situation where you had to coordinate with teammates to meet a project deadline. What role did you play and how did you ensure effective collaboration?",
+        "Describe a time when you had to prioritize multiple tasks or projects (e.g., coursework, extracurricular leadership, and development work). How did you manage your time and resources?",
+        "How do you approach writing unit and integration tests for Spring Boot RESTful APIs, and what tools do you use to automate testing and ensure code quality?",
+        "Can you discuss a scenario where you identified a scalability or performance bottleneck in a MySQL database or a Java service, and the steps you took to resolve it?"
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "sessionId" : "a4f15ef8",
+  "candidateName" : "Demo Candidate",
+  "skills" : [ "Java", "JavaScript", "React", "CSS", "Spring Boot", "Data Structures", "Algorithms" ],
+  "difficulty" : "Medium",
+  "topic" : "Arrays",
+  "interactionLog" : [ ],
+  "codeSubmissions" : [ {
+    "language" : "java",
+    "questionId" : 201,
+    "questionText" : "coding problem",
+    "code" : "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        String s = br.readLine();\n        if (s == null) return; // no input\n        // Reverse using StringBuilder which runs in O(n) time and O(n) extra space\n        StringBuilder sb = new StringBuilder(s);\n        sb.reverse();\n        System.out.print(sb.toString());\n    }\n}",
+    "passed" : true,
+    "timeComplexity" : "O(N)",
+    "spaceComplexity" : "O(N)",
+    "feedback" : "Code evaluated.",
+    "testResults" : [ ],
+    "timestamp" : "2026-02-27T07:20:22.797511400"
+  }, {
+    "language" : "java",
+    "questionId" : 201,
+    "questionText" : "coding problem",
+    "code" : "import java.io.*;\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        // Read the array line, e.g. \"[2,7,11,15]\"\n        String arrayLine = br.readLine();\n        if (arrayLine == null) return;\n        arrayLine = arrayLine.trim();\n        // Remove possible surrounding brackets and spaces\n        if (arrayLine.startsWith(\"[\") && arrayLine.endsWith(\"]\")) {\n            arrayLine = arrayLine.substring(1, arrayLine.length() - 1);\n        }\n        // Split by commas (allow spaces around commas)\n        String[] parts = arrayLine.isEmpty() ? new String[0] : arrayLine.split(\",\\\\s*\");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i].trim());\n        }\n        // Read target line\n        String targetLine = br.readLine();\n        if (targetLine == null) return;\n        int target = Integer.parseInt(targetLine.trim());\n\n        int[] result = twoSum(nums, target);\n        // Print result in the required format, e.g. \"[0,1]\"\n        System.out.println(\"[\" + result[0] + \",\" + result[1] + \"]\");\n    }\n\n    private static int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> map = new HashMap<>(); // value -> index\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) {\n                return new int[]{map.get(complement), i};\n            }\n            // store the index of the current number\n            map.put(nums[i], i);\n        }\n        // According to problem statement a solution always exists.\n        return new int[0];\n    }\n}\n",
+    "passed" : true,
+    "timeComplexity" : "O(N)",
+    "spaceComplexity" : "O(N)",
+    "feedback" : "Code evaluated.",
+    "testResults" : [ ],
+    "timestamp" : "2026-02-27T07:21:14.065838400"
+  } ],
+  "transcript" : "[USER]: Code submitted [java]:\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        String s = br.readLine();\n        if (s == null) return; // no input\n        // Reverse using StringBuilder which runs in O(n) time and O(n) extra space\n        StringBuilder sb = new StringBuilder(s);\n        sb.reverse();\n        System.out.print(sb.toString());\n    }\n}\n[AI]: Code feedback: Code evaluated.\n[USER]: Code submitted [java]:\nimport java.io.*;\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n        // Read the array line, e.g. \"[2,7,11,15]\"\n        String arrayLine = br.readLine();\n        if (arrayLine == null) return;\n        arrayLine = arrayLine.trim();\n        // Remove possible surrounding brackets and spaces\n        if (arrayLine.startsWith(\"[\") && arrayLine.endsWith(\"]\")) {\n            arrayLine = arrayLine.substring(1, arrayLine.length() - 1);\n        }\n        // Split by commas (allow spaces around commas)\n        String[] parts = arrayLine.isEmpty() ? new String[0] : arrayLine.split(\",\\\\s*\");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i].trim());\n        }\n        // Read target line\n        String targetLine = br.readLine();\n        if (targetLine == null) return;\n        int target = Integer.parseInt(targetLine.trim());\n\n        int[] result = twoSum(nums, target);\n        // Print result in the required format, e.g. \"[0,1]\"\n        System.out.println(\"[\" + result[0] + \",\" + result[1] + \"]\");\n    }\n\n    private static int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> map = new HashMap<>(); // value -> index\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) {\n                return new int[]{map.get(complement), i};\n            }\n            // store the index of the current number\n            map.put(nums[i], i);\n        }\n        // According to problem statement a solution always exists.\n        return new int[0];\n    }\n}\n\n[AI]: Code feedback: Code evaluated."
+}

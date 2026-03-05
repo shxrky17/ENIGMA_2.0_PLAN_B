@@ -1,0 +1,14 @@
+{
+    "questions": [
+        "Can you walk us through the architecture of the Online Quiz Portal you built, specifically how you implemented role\u2011based access control using JWT?",
+        "In the LawPilot project you used TF\u2011IDF, XGBoost, and MarathiBERT for multi\u2011label classification. How did you decide which model to use for each step, and what metrics did you use to evaluate their performance?",
+        "Describe a challenging bug you encountered while integrating MongoDB with your Node.js/Express backend. How did you diagnose and resolve it?",
+        "Your resume lists both Java and Python as primary languages. Can you compare the concurrency models of Java (e.g., threads, executors) and Python (e.g., threading, asyncio) and give an example of when you would choose one over the other?",
+        "How do you ensure the security and scalability of your RESTful APIs, especially concerning authentication, input validation, and rate limiting?",
+        "Tell us about a time when you had to learn a new technology or tool quickly to meet a project deadline. What approach did you take and what was the outcome?",
+        "In the quiz platform, you implemented difficulty levels and result analytics. How did you design the data schema in MongoDB to support these features efficiently?",
+        "Give an example of a situation where you had to collaborate with a non\u2011technical stakeholder (e.g., a legal expert for LawPilot). How did you bridge the communication gap and ensure the project\u2019s requirements were met?",
+        "What strategies do you employ for version control and code collaboration when working with a team on GitHub? Can you describe a pull\u2011request workflow you have found effective?",
+        "Describe a scenario where a project you were working on did not go as planned. How did you handle the setbacks, and what did you learn that you applied to subsequent projects?"
+    ]
+}

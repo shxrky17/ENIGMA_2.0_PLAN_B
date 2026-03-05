@@ -1,0 +1,14 @@
+{
+    "questions": [
+        "Can you walk me through the architecture of your Online Quiz Portal, focusing on how you implemented JWT authentication and role\u2011based authorization?",
+        "What strategies did you use to optimize MongoDB performance for the quiz platform, and how would you apply similar optimizations to a high\u2011traffic production system?",
+        "Describe a situation where you had to debug a complex issue in a Node.js/Express API. What steps did you take and what was the outcome?",
+        "How did you design the RESTful endpoints for the LawPilot AI\u2011Based Legal Assistant, and what considerations did you make for versioning and backward compatibility?",
+        "Explain how you integrated XGBoost and MarathiBERT models into a Flask backend. What challenges did you face when serving machine\u2011learning predictions at scale?",
+        "You have experience with AWS EC2. How would you containerize and deploy one of your backend services to achieve better scalability and reliability?",
+        "Tell us about a time you received critical feedback on your code or design. How did you respond, and what changes did you implement as a result?",
+        "Collaboration is key in full\u2011stack projects. Can you give an example of how you coordinated with front\u2011end developers or designers to deliver a seamless user experience?",
+        "With a strong background in data structures and algorithms, how do you decide when to use a particular data structure or algorithm in your backend implementations?",
+        "Looking ahead, what new technologies or practices are you interested in learning to improve your backend development skill set, and why?"
+    ]
+}

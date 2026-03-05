@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Code Judge</title>
+  <style>
+    :root {
+      --bg1: #f5f8ff;
+      --bg2: #e6f6f0;
+      --card: #ffffff;
+      --ink: #102a43;
+      --muted: #486581;
+      --ok: #137333;
+      --bad: #b42318;
+      --accent: #006d77;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 0% 0%, var(--bg2), transparent 45%),
+                  radial-gradient(circle at 100% 100%, var(--bg1), transparent 40%),
+                  #f8fbff;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(16, 42, 67, 0.12);
+      overflow: hidden;
+    }
+    .head {
+      background: linear-gradient(120deg, #0f766e, #0b7285);
+      color: #fff;
+      padding: 22px;
+    }
+    .head h1 { margin: 0; font-size: 28px; }
+    .head p { margin: 8px 0 0; opacity: 0.9; }
+    .content { padding: 20px; display: grid; gap: 16px; }
+    textarea, input {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-family: Consolas, "Courier New", monospace;
+      background: #fff;
+    }
+    textarea { min-height: 240px; }
+    .row { display: grid; gap: 10px; grid-template-columns: 1fr 1fr auto; }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-add { background: #d9f3ee; color: #0f766e; }
+    .btn-run { background: var(--accent); color: #fff; padding: 12px 16px; }
+    .btn-del { background: #fde7e7; color: var(--bad); }
+    .tests { display: grid; gap: 10px; }
+    .result {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+    .summary { font-weight: 700; }
+    .ok { color: var(--ok); }
+    .bad { color: var(--bad); }
+    .case {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px;
+      background: #f8fbff;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+    @media (max-width: 760px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h1>DSA Code Judge</h1>
+      <p>Submit Java code + test cases and get pass/fail evaluation.</p>
+    </div>
+    <div class="content">
+      <div>
+        <label for="code">Java Code (`Main` class expected)</label>
+        <textarea id="code">import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        System.out.println(a + b);
+    }
+}</textarea>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <strong>Test Cases</strong>
+          <button class="btn btn-add" id="addCase" type="button">+ Add Test Case</button>
+        </div>
+        <div class="tests" id="tests"></div>
+      </div>
+
+      <div>
+        <button class="btn btn-run" id="runBtn" type="button">Evaluate</button>
+      </div>
+
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const testsEl = document.getElementById("tests");
+    const resultEl = document.getElementById("result");
+
+    function addTestCase(input = "", expected = "") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "row";
+      wrapper.innerHTML = `
+        <input placeholder="Input (e.g. 2 3)" value="${input.replace(/"/g, "&quot;")}">
+        <input placeholder="Expected Output (e.g. 5)" value="${expected.replace(/"/g, "&quot;")}">
+        <button class="btn btn-del" type="button">Delete</button>
+      `;
+      wrapper.querySelector(".btn-del").addEventListener("click", () => wrapper.remove());
+      testsEl.appendChild(wrapper);
+    }
+
+    document.getElementById("addCase").addEventListener("click", () => addTestCase());
+    document.getElementById("runBtn").addEventListener("click", evaluateCode);
+
+    addTestCase("2 3", "5");
+    addTestCase("10 20", "30");
+
+    async function evaluateCode() {
+      const code = document.getElementById("code").value;
+      const testCases = Array.from(testsEl.children).map(row => {
+        const inputs = row.querySelectorAll("input");
+        return {
+          input: inputs[0].value,
+          expectedOutput: inputs[1].value
+        };
+      }).filter(tc => tc.input.trim() !== "" || tc.expectedOutput.trim() !== "");
+
+      resultEl.innerHTML = "Running...";
+
+      try {
+        const res = await fetch("/api/compiler/judge", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            language: "java",
+            code,
+            testCases
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          resultEl.innerHTML = `<div class="summary bad">${data.error || "Request failed"}</div>`;
+          return;
+        }
+
+        const statusClass = data.passed ? "ok" : "bad";
+        const lines = [
+          `<div class="summary ${statusClass}">${data.message} (${data.passedCount}/${data.totalCount})</div>`
+        ];
+
+        for (const one of data.results) {
+          lines.push(
+            `<div class="case">
+Test #${one.index}: ${one.passed ? "PASS" : "FAIL"}
+Input: ${escapeHtml(one.input || "")}
+Expected: ${escapeHtml(one.expectedOutput || "")}
+Actual: ${escapeHtml(one.actualOutput || "")}
+Error: ${escapeHtml(one.error || "-")}
+            </div>`
+          );
+        }
+        resultEl.innerHTML = lines.join("");
+      } catch (e) {
+        resultEl.innerHTML = `<div class="summary bad">Cannot connect to backend: ${e.message}</div>`;
+      }
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
